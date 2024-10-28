@@ -17,8 +17,17 @@ public class Java_Mysql {
 
             insertarRegistro(mensaje, autor);
             consultaBaseDatos();
+            System.out.println("-------------------------------------------------------------------------------");
+            System.out.println("-------------------------Editar los mensajes----------------------------------");
+            System.out.println("Por favor, introduzca el mensaje");
+            String mensaje1 = sc.nextLine();
+            System.out.println("Lo ha escrito por: ");
+            String autor2 = sc.nextLine();
+            System.out.println("que mensaje quieres editar, selecciona el id ");
+            int id = sc.nextInt();
+            editarRegistro(mensaje1,autor2,id);
 
-            consultaBaseDatos();  // Llama a este método para ver los registros actuales
+            consultaBaseDatos();  
  
        
     }
@@ -78,4 +87,32 @@ public class Java_Mysql {
         ps.close();
         conectar.close();
     }
+    
+    static void editarRegistro(String mensaje, String autor, int id) throws SQLException{
+         /*
+        Conexion a base de datos
+        */
+        Connection conectar =DriverManager.getConnection(
+                "jdbc:mysql://localhost/pruebamensajes_db?serverTimezone=UTC", 
+                "root", 
+                "Alvaro0801"
+        );
+        System.out.println("Conexion Exitosa a la base de datos");
+        //Hacer un Select a la base de datos
+        
+        // Se define una cadena SQL para seleccionar todos los registros de la tabla "mensajes"
+        String sql = "UPDATE mensajes SET mensaje = ?, autor =? WHERE id_mensajes = ?";
+        // Se crea un objeto PreparedStatement utilizando la conexión "conectar" y la consulta SQL definida
+        PreparedStatement ps = conectar.prepareStatement(sql);
+        ps.setString(1, mensaje);
+        ps.setString(2, autor);
+        ps.setInt(3, id);
+        ps.executeUpdate();
+        
+        
+        ps.close();
+        conectar.close();
+    }
+    
+    
 }
