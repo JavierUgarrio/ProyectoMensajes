@@ -26,7 +26,11 @@ public class Java_Mysql {
             System.out.println("que mensaje quieres editar, selecciona el id ");
             int id = sc.nextInt();
             editarRegistro(mensaje1,autor2,id);
-
+             System.out.println("-------------------------------------------------------------------------------");
+            System.out.println("-------------------------Eliminar los mensajes----------------------------------");
+            System.out.println("Selecciona un id para eliminar");
+            int id2 = sc.nextInt();
+            eliminarRegistro(id2);
             consultaBaseDatos();  
  
        
@@ -107,6 +111,29 @@ public class Java_Mysql {
         ps.setString(1, mensaje);
         ps.setString(2, autor);
         ps.setInt(3, id);
+        ps.executeUpdate();
+        
+        
+        ps.close();
+        conectar.close();
+    }
+    static void eliminarRegistro(int id) throws SQLException{
+         /*
+        Conexion a base de datos
+        */
+        Connection conectar =DriverManager.getConnection(
+                "jdbc:mysql://localhost/pruebamensajes_db?serverTimezone=UTC", 
+                "root", 
+                "Alvaro0801"
+        );
+        System.out.println("Conexion Exitosa a la base de datos");
+        //Hacer un Select a la base de datos
+        
+        // Se define una cadena SQL para seleccionar todos los registros de la tabla "mensajes"
+        String sql = "DELETE FROM mensajes where id_mensajes = ?";
+        // Se crea un objeto PreparedStatement utilizando la conexión "conectar" y la consulta SQL definida
+        PreparedStatement ps = conectar.prepareStatement(sql);
+        ps.setInt(1, id);
         ps.executeUpdate();
         
         
